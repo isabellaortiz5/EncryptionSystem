@@ -65,7 +65,7 @@ class CryptoSystem:
         else:
             raise ValueError(f"Unknown cipher type: {cipher_type}")
 
-    def crack_cipher(self, cipher_type: str, text: str) -> List[Tuple[Any, str, float]]:
+    def crack_cipher(self, cipher_type: str, text: str) -> list[tuple[Any, str, float]]:
         """Attempt to crack the cipher."""
         if cipher_type == 'affine':
             return self.brute_force.crack_affine(text)
@@ -94,7 +94,7 @@ def main():
     parser.add_argument('--language', '-l', choices=['en', 'es'], default='en',
                       help='Language to use (en for English, es for Spanish)')
     args = parser.parse_args()
-
+    
     # Create crypto system
     crypto = CryptoSystem(args.language)
 

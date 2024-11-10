@@ -1,8 +1,8 @@
 import random
 from typing import Dict
 import string
-from ..utils.file_io import save_key_to_file, load_key_from_file
-from ..hacking.analysis import TextAnalysis
+from utils.file_io import save_key_to_file, load_key_from_file
+from hacking.analysis import TextAnalysis
 
 class MonoalphabeticCipher:
     """

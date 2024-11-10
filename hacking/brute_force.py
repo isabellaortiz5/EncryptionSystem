@@ -2,9 +2,9 @@ from typing import List, Tuple, Dict
 from collections import Counter
 import string
 import itertools
-from ..ciphers.affine_cipher import AffineCipher
-from ..ciphers.polyalphabetic_cipher import PolyalphabeticCipher
-from .analysis import TextAnalysis
+from ciphers.affine_cipher import AffineCipher
+from ciphers.polyalphabetic_cipher import PolyalphabeticCipher
+from hacking.analysis import TextAnalysis
 
 class BruteForce:
     """Implementation of brute force attacks for various ciphers."""

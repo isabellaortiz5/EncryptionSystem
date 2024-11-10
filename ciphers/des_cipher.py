@@ -1,7 +1,7 @@
 import random
 from typing import List
-from ..utils.file_io import save_key_to_file, load_key_from_file
-from ..utils.des_utils import DESUtils
+from utils.file_io import save_key_to_file, load_key_from_file
+from utils.des_utils import DESUtils
 
 class DESCipher:
     """
