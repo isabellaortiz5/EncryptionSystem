@@ -56,7 +56,6 @@ class CryptoSystem:
         if cipher_type == 'affine':
             return self.affine.decrypt(text, key[0], key[1])
         elif cipher_type == 'mono':
-            self.mono.set_key(key)
             return self.mono.decrypt(text)
         elif cipher_type == 'poly':
             return self.poly.decrypt(text, key)
@@ -121,7 +120,7 @@ def main():
                     elif args.cipher == 'mono':
                         key = crypto.mono.generate_key()
                         if args.output:
-                            crypto.mono.save_key(args.key)
+                            crypto.mono.save_key('data/mono/mono_key.json')
                     elif args.cipher == 'poly':
                         key = crypto.poly.generate_key(5)  # 5-character key
                         if args.output:
@@ -138,6 +137,7 @@ def main():
                 if args.cipher == 'affine':
                     key = crypto.affine.load_key(args.key)
                 elif args.cipher == 'mono':
+                    print(args.key)
                     key = crypto.mono.load_key(args.key)
                 elif args.cipher == 'poly':
                     key = crypto.poly.load_key(args.key)

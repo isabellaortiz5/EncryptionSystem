@@ -1,0 +1,34 @@
+{
+    "cipher_type": "monoalphabetic",
+    "key_data": {
+        "substitution_map": {
+            "A": "X",
+            "B": "G",
+            "C": "R",
+            "D": "C",
+            "E": "W",
+            "F": "P",
+            "G": "U",
+            "H": "S",
+            "I": "I",
+            "J": "H",
+            "K": "M",
+            "L": "E",
+            "M": "J",
+            "N": "F",
+            "O": "B",
+            "P": "Y",
+            "Q": "Q",
+            "R": "A",
+            "S": "N",
+            "T": "Z",
+            "U": "V",
+            "V": "O",
+            "W": "L",
+            "X": "T",
+            "Y": "D",
+            "Z": "K"
+        },
+        "language": "en"
+    }
+}

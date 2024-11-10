@@ -45,14 +45,18 @@ class MonoalphabeticCipher:
         Args:
             substitution_map: Dictionary mapping plaintext to ciphertext characters
         """
-        # Verify the key contains all alphabet characters
+        # Verify the key contains all alphabet character
+        print("start")
         if not all(c in substitution_map for c in self.alphabet):
             raise ValueError(f"Substitution map must contain all characters in the {self.language} alphabet")
         if len(set(substitution_map.values())) != len(self.alphabet):
             raise ValueError("Substitution map must not contain duplicate values")
-            
+
+        print("before sub")    
         self.substitution_map = substitution_map
+        print("before reverse")
         self.reverse_map = {v: k for k, v in substitution_map.items()}
+        print("after reverse")
 
     def encrypt(self, plaintext: str) -> str:
         """
@@ -101,7 +105,7 @@ class MonoalphabeticCipher:
 
     def analyze_frequency(self, text: str) -> Dict[str, float]:
         """Perform frequency analysis on the text."""
-        return dict(self.analysis.frequency_analysis(text))
+        return dict(self.analysis.analyze_frequency(text))
 
     def save_key(self, filename: str):
         """Save the current key to a file."""
