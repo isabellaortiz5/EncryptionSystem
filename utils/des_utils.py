@@ -1,7 +1,6 @@
 from typing import List
 
 class DESUtils:
-    """Utility class for DES operations."""
     
     # Initial and Final Permutation Tables
     IP = [58, 50, 42, 34, 26, 18, 10, 2,
@@ -32,7 +31,6 @@ class DESUtils:
          24, 25, 26, 27, 28, 29,
          28, 29, 30, 31, 32, 1]
 
-    # S-boxes
     S_BOXES = [
         # S1
         [[14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7],
@@ -76,13 +74,11 @@ class DESUtils:
          [2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11]]
     ]
 
-    # P-box permutation
     P = [16, 7, 20, 21, 29, 12, 28, 17,
          1, 15, 23, 26, 5, 18, 31, 10,
          2, 8, 24, 14, 32, 27, 3, 9,
          19, 13, 30, 6, 22, 11, 4, 25]
 
-    # Key schedule tables
     PC1 = [57, 49, 41, 33, 25, 17, 9,
            1, 58, 50, 42, 34, 26, 18,
            10, 2, 59, 51, 43, 35, 27,
@@ -99,12 +95,10 @@ class DESUtils:
            51, 45, 33, 48, 44, 49, 39, 56,
            34, 53, 46, 42, 50, 36, 29, 32]
 
-    # Number of left shifts for each round
     SHIFTS = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
     @staticmethod
     def permute(block: int, table: List[int], block_size: int) -> int:
-        """Permute the bits of a block according to a permutation table."""
         result = 0
         for i, pos in enumerate(table):
             bit = (block >> (block_size - pos)) & 1
@@ -113,36 +107,28 @@ class DESUtils:
 
     @staticmethod
     def substitute(block: int, s_box: List[List[int]]) -> int:
-        """Apply S-box substitution to a 6-bit block."""
-        # Extract row and column bits
         row = ((block & 0b100000) >> 4) | (block & 1)
         col = (block & 0b011110) >> 1
         return s_box[row][col]
 
     @staticmethod
     def rotate_left(block: int, shift: int, block_size: int) -> int:
-        """Perform a circular left shift on a block of bits."""
         mask = (1 << block_size) - 1
         return ((block << shift) | (block >> (block_size - shift))) & mask
 
     @classmethod
     def generate_subkeys(cls, key: int) -> List[int]:
-        """Generate 16 48-bit subkeys from the 64-bit master key."""
-        # Apply PC1 permutation
         key = cls.permute(key, cls.PC1, 64)
         
-        # Split into left and right halves (28 bits each)
         left = (key >> 28) & 0xFFFFFFF
         right = key & 0xFFFFFFF
         
         subkeys = []
-        # Generate 16 subkeys
+
         for shift in cls.SHIFTS:
-            # Rotate halves
             left = cls.rotate_left(left, shift, 28)
             right = cls.rotate_left(right, shift, 28)
             
-            # Combine halves and apply PC2
             combined = (left << 28) | right
             subkey = cls.permute(combined, cls.PC2, 56)
             subkeys.append(subkey)
@@ -152,21 +138,12 @@ class DESUtils:
     @classmethod
     def f_function(cls, right: int, subkey: int) -> int:
         """Implement the Feistel (F) function."""
-        # Expansion
         expanded = cls.permute(right, cls.E, 32)
-        
-        # XOR with subkey
         xored = expanded ^ subkey
-        
-        # S-box substitution
         result = 0
         for i in range(8):
-            # Extract 6-bit block
             block = (xored >> (42 - i * 6)) & 0x3F
-            # Apply S-box
             substituted = cls.substitute(block, cls.S_BOXES[i])
-            # Build result
             result = (result << 4) | substituted
             
-        # P-box permutation
         return cls.permute(result, cls.P, 32)

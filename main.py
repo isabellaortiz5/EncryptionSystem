@@ -10,15 +10,8 @@ from hacking.analysis import TextAnalysis
 from utils.file_io import save_text_to_file, load_text_from_file
 
 class CryptoSystem:
-    """Main class to handle all cryptographic operations."""
     
     def __init__(self, language: str = 'en'):
-        """
-        Initialize the cryptographic system.
-        
-        Args:
-            language: Language to use ('en' for English, 'es' for Spanish)
-        """
         self.affine = AffineCipher(language)
         self.mono = MonoalphabeticCipher(language)
         self.poly = PolyalphabeticCipher(language)
@@ -27,9 +20,6 @@ class CryptoSystem:
         self.analysis = TextAnalysis(language)
 
     def get_cipher_instance(self, cipher_type: str):
-        """
-        Get the cipher instance based on the cipher type.
-        """
         ciphers = {
             'affine': self.affine,
             'mono': self.mono,
@@ -40,7 +30,6 @@ class CryptoSystem:
 
 
     def encrypt_text(self, cipher_type: str, text: str, key: Any) -> str:
-        """Encrypt text using specified cipher."""
         if cipher_type == 'affine':
             return self.affine.encrypt(text, key[0], key[1])
         elif cipher_type == 'mono':
@@ -54,7 +43,6 @@ class CryptoSystem:
             raise ValueError("Unknown cipher type:")
 
     def decrypt_text(self, cipher_type: str, text: str, key: Any) -> str:
-        """Decrypt text using specified cipher."""
         if cipher_type == 'affine':
             return self.affine.decrypt(text, key[0], key[1])
         elif cipher_type == 'mono':
@@ -82,24 +70,16 @@ class CryptoSystem:
 
 def main():
     parser = argparse.ArgumentParser(description='Cryptographic Systems Implementation')
-    parser.add_argument('operation', choices=['encrypt', 'decrypt', 'crack'],
-                      help='Operation to perform (encrypt, decrypt, or crack)')
-    parser.add_argument('cipher', choices=['affine', 'mono', 'poly', 'des'],
-                      help='Cipher to use (affine, mono, poly, or des)')
-    parser.add_argument('--input', '-i', required=True,
-                      help='Input text or file')
-    parser.add_argument('--output', '-o',
-                      help='Output file (optional)')
-    parser.add_argument('--key', '-k',
-                      help='Key file')
-    parser.add_argument('--language', '-l', choices=['en', 'es'], default='en',
-                      help='Language to use (en for English, es for Spanish)')
+    parser.add_argument('operation', choices=['encrypt', 'decrypt', 'crack'])
+    parser.add_argument('cipher', choices=['affine', 'mono', 'poly', 'des'])
+    parser.add_argument('--input', '-i', required=True)
+    parser.add_argument('--output', '-o')
+    parser.add_argument('--key', '-k')
+    parser.add_argument('--language', '-l', choices=['en', 'es'], default='en')
     args = parser.parse_args()
     
-    # Create crypto system
     crypto = CryptoSystem(args.language)
 
-    # Load input
     try:
         if args.input.endswith('.txt'):
             text = load_text_from_file(args.input)
@@ -109,12 +89,10 @@ def main():
         print(f"Error loading input: {e}")
         sys.exit(1)
 
-    # Perform requested operation
     try:
         if args.operation in ['encrypt', 'decrypt']:
             if not args.key:
                 if args.operation == 'encrypt':
-                    # Generate new key
                     if args.cipher == 'affine':
                         key = crypto.affine.generate_key()
                         if args.output:
@@ -124,7 +102,7 @@ def main():
                         if args.output:
                             crypto.mono.save_key('data/mono/mono_key.json')
                     elif args.cipher == 'poly':
-                        key = crypto.poly.generate_key(5)  # 5-character key
+                        key = crypto.poly.generate_key(5)
                         if args.output:
                             crypto.poly.save_key(key, 'data/poly/poly_key.json')
                     elif args.cipher == 'des':
@@ -135,7 +113,6 @@ def main():
                     print("Key is required for decryption")
                     sys.exit(1)
             else:
-                # Load existing key
                 if args.cipher == 'affine':
                     key = crypto.affine.load_key(args.key)
                 elif args.cipher == 'mono':
@@ -146,7 +123,6 @@ def main():
                 elif args.cipher == 'des':
                     key = crypto.des.load_key(args.key)
 
-            # Perform encryption/decryption
             if args.operation == 'encrypt':
                 result = crypto.encrypt_text(args.cipher, text, key)
             else:

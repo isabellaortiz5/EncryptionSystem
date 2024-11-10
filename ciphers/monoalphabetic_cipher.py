@@ -5,21 +5,11 @@ from utils.file_io import save_key_to_file, load_key_from_file
 from hacking.analysis import TextAnalysis
 
 class MonoalphabeticCipher:
-    """
-    Implementation of the Monoalphabetic Substitution Cipher with support for 
-    both English and Spanish alphabets.
-    """
     
     def __init__(self, language: str = 'en'):
-        """
-        Initialize the Monoalphabetic Cipher.
-        
-        Args:
-            language: Language code ('en' for English or 'es' for Spanish)
-        """
         self.alphabets = {
-            'en': string.ascii_uppercase,  # 26 letters
-            'es': "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"  # 27 letters
+            'en': string.ascii_uppercase,  
+            'es': "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
         }
         self.alphabet = self.alphabets.get(language, self.alphabets['en'])
         self.language = language
@@ -28,7 +18,6 @@ class MonoalphabeticCipher:
         self.analysis = TextAnalysis(language)
 
     def generate_key(self) -> Dict[str, str]:
-        """Generate a random substitution key."""
         alphabet_list = list(self.alphabet)
         shuffled = alphabet_list.copy()
         random.shuffle(shuffled)
@@ -39,35 +28,14 @@ class MonoalphabeticCipher:
         return self.substitution_map
 
     def set_key(self, substitution_map: Dict[str, str]):
-        """
-        Set the substitution key manually.
-        
-        Args:
-            substitution_map: Dictionary mapping plaintext to ciphertext characters
-        """
-        # Verify the key contains all alphabet character
-        print("start")
         if not all(c in substitution_map for c in self.alphabet):
             raise ValueError(f"Substitution map must contain all characters in the {self.language} alphabet")
         if len(set(substitution_map.values())) != len(self.alphabet):
-            raise ValueError("Substitution map must not contain duplicate values")
-
-        print("before sub")    
+            raise ValueError("Substitution map must not contain duplicate values")    
         self.substitution_map = substitution_map
-        print("before reverse")
         self.reverse_map = {v: k for k, v in substitution_map.items()}
-        print("after reverse")
 
     def encrypt(self, plaintext: str) -> str:
-        """
-        Encrypt plaintext using the current substitution map.
-        
-        Args:
-            plaintext: Text to encrypt
-            
-        Returns:
-            Encrypted text
-        """
         if not self.substitution_map:
             self.generate_key()
             
@@ -80,15 +48,6 @@ class MonoalphabeticCipher:
         return ciphertext
 
     def decrypt(self, ciphertext: str) -> str:
-        """
-        Decrypt ciphertext using the current reverse substitution map.
-        
-        Args:
-            ciphertext: Text to decrypt
-            
-        Returns:
-            Decrypted text
-        """
         if not self.reverse_map:
             if self.substitution_map:
                 self.reverse_map = {v: k for k, v in self.substitution_map.items()}
@@ -121,7 +80,6 @@ class MonoalphabeticCipher:
         if data['cipher_type'] != 'monoalphabetic':
             raise ValueError("Invalid key file type")
         
-        # Update language if needed
         self.language = data['key_data']['language']
         self.alphabet = self.alphabets[self.language]
         self.set_key(data['key_data']['substitution_map'])
