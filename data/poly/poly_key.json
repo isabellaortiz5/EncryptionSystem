@@ -1,0 +1,7 @@
+{
+    "cipher_type": "polyalphabetic",
+    "key_data": {
+        "key": "FLMYS",
+        "language": "en"
+    }
+}

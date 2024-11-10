@@ -112,7 +112,7 @@ class TextAnalysis:
         ioc = sum_freqs / (N * (N - 1))
         return ioc
 
-    def get_key_length_candidates(self, text: str, max_length: int = 20) -> List[Tuple[int, float]]:
+    def get_likely_key_lengths(self, text: str, max_length: int = 20) -> List[Tuple[int, float]]:
         """
         Find possible key lengths using IoC for Polyalphabetic cipher.
         

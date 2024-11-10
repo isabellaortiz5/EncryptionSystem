@@ -124,11 +124,11 @@ def main():
                     elif args.cipher == 'poly':
                         key = crypto.poly.generate_key(5)  # 5-character key
                         if args.output:
-                            crypto.poly.save_key(key, args.key)
+                            crypto.poly.save_key(key, 'data/poly/poly_key.json')
                     elif args.cipher == 'des':
                         key = crypto.des.generate_key()
                         if args.output:
-                            crypto.des.save_key(key, args.key)
+                            crypto.des.save_key(key, 'data/des/des_key.json')
                 else:
                     print("Key is required for decryption")
                     sys.exit(1)
