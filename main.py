@@ -108,12 +108,6 @@ def main():
         print(f"Error loading input: {e}")
         sys.exit(1)
 
-    # Sample text (for testing)
-    sample_text = """From fairest creatures we desire increase,
-    That thereby beauty's rose might never die,
-    But as the riper should by time decease,
-    His tender heir might bear his memory"""
-
     # Perform requested operation
     try:
         if args.operation in ['encrypt', 'decrypt']:
@@ -123,7 +117,7 @@ def main():
                     if args.cipher == 'affine':
                         key = crypto.affine.generate_key()
                         if args.output:
-                            crypto.affine.save_key(key[0], key[1], args.key)
+                            crypto.affine.save_key(key[0], key[1], 'data/affine/affine_key.json')
                     elif args.cipher == 'mono':
                         key = crypto.mono.generate_key()
                         if args.output:
