@@ -1,7 +1,7 @@
 import string
 import random
 from typing import Tuple, List
-from ..utils.file_io import save_key_to_file, load_key_from_file
+from utils.file_io import save_key_to_file, load_key_from_file
 
 class AffineCipher:
     """Implementation of the Affine Cipher with support for both English and Spanish alphabets."""
