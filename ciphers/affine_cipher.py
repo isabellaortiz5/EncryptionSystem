@@ -23,15 +23,15 @@ class AffineCipher:
         self.language = language
         self.valid_a_values = self._get_valid_a_values()
 
-    def _get_valid_a_values(self) -> List[int]:
-        """Get all valid 'a' values that are coprime with alphabet length."""
-        return [a for a in range(1, self.m) if self._gcd(a, self.m) == 1]
+    # def _get_valid_a_values(self) -> List[int]:
+    #     """Get all valid 'a' values that are coprime with alphabet length."""
+    #     return [a for a in range(1, self.m) if self._gcd(a, self.m) == 1]
 
-    def _gcd(self, a: int, b: int) -> int:
-        """Compute the greatest common divisor (GCD) of two numbers."""
-        while b != 0:
-            a, b = b, a % b
-        return a
+    # def _gcd(self, a: int, b: int) -> int:
+    #     """Compute the greatest common divisor (GCD) of two numbers."""
+    #     while b != 0:
+    #         a, b = b, a % b
+    #     return a
 
     def _mod_inverse(self, a: int, m: int) -> int:
         """

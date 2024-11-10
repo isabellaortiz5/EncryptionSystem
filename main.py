@@ -6,6 +6,7 @@ from ciphers.monoalphabetic_cipher import MonoalphabeticCipher
 from ciphers.polyalphabetic_cipher import PolyalphabeticCipher
 from ciphers.des_cipher import DESCipher
 from hacking.brute_force import BruteForce
+from hacking.analysis import TextAnalysis
 from utils.file_io import save_text_to_file, load_text_from_file
 
 class CryptoSystem:
@@ -23,6 +24,7 @@ class CryptoSystem:
         self.poly = PolyalphabeticCipher(language)
         self.des = DESCipher()
         self.brute_force = BruteForce(language)
+        self.analysis = TextAnalysis(language)
 
     def get_cipher_instance(self, cipher_type: str):
         """
@@ -49,7 +51,7 @@ class CryptoSystem:
         elif cipher_type == 'des':
             return self.des.encrypt(text, key).hex()
         else:
-            raise ValueError(f"Unknown cipher type: {cipher_type}")
+            raise ValueError("Unknown cipher type:")
 
     def decrypt_text(self, cipher_type: str, text: str, key: Any) -> str:
         """Decrypt text using specified cipher."""
@@ -62,34 +64,34 @@ class CryptoSystem:
         elif cipher_type == 'des':
             return self.des.decrypt(bytes.fromhex(text), key)
         else:
-            raise ValueError(f"Unknown cipher type: {cipher_type}")
+            raise ValueError("Unknown cipher type:")
 
-    def crack_cipher(self, cipher_type: str, text: str) -> list[tuple[Any, str, float]]:
-        """Attempt to crack the cipher."""
-        if cipher_type == 'affine':
-            return self.brute_force.crack_affine(text)
-        elif cipher_type == 'mono':
-            freq_analysis = self.mono.analyze_frequency(text)
-            return [('Frequency Analysis:', freq_analysis, 0.0)]
-        elif cipher_type == 'poly':
-            key_analysis = self.poly.analyze_key_length(text)
-            possible_keys = self.brute_force.crack_polyalphabetic(text)
-            return possible_keys
-        else:
-            raise ValueError(f"Cracking not implemented for cipher type: {cipher_type}")
+    # def crack_cipher(self, cipher_type: str, text: str) -> list[tuple[Any, str, float]]:
+    #     """Attempt to crack the cipher."""
+    #     if cipher_type == 'affine':
+    #         return self.brute_force.crack_affine(text)
+    #     elif cipher_type == 'mono':
+    #         freq_analysis = self.mono.analyze_frequency(text)
+    #         return [('Frequency Analysis:', freq_analysis, 0.0)]
+    #     elif cipher_type == 'poly':
+    #         key_analysis = self.poly.analyze_key_length(text)
+    #         possible_keys = self.brute_force.crack_polyalphabetic(text)
+    #         return possible_keys
+    #     else:
+    #         raise ValueError(f"Cracking not implemented for cipher type: {cipher_type}")
 
 def main():
     parser = argparse.ArgumentParser(description='Cryptographic Systems Implementation')
     parser.add_argument('operation', choices=['encrypt', 'decrypt', 'crack'],
-                      help='Operation to perform')
+                      help='Operation to perform (encrypt, decrypt, or crack)')
     parser.add_argument('cipher', choices=['affine', 'mono', 'poly', 'des'],
-                      help='Cipher to use')
+                      help='Cipher to use (affine, mono, poly, or des)')
     parser.add_argument('--input', '-i', required=True,
                       help='Input text or file')
     parser.add_argument('--output', '-o',
                       help='Output file (optional)')
     parser.add_argument('--key', '-k',
-                      help='Key file (required for encryption/decryption)')
+                      help='Key file')
     parser.add_argument('--language', '-l', choices=['en', 'es'], default='en',
                       help='Language to use (en for English, es for Spanish)')
     args = parser.parse_args()
@@ -150,19 +152,19 @@ def main():
             else:
                 result = crypto.decrypt_text(args.cipher, text, key)
 
-        else:  # crack
-            results = crypto.crack_cipher(args.cipher, text)
-            if args.cipher == 'mono':
-                print("\nFrequency Analysis Results:")
-                for char, freq in results[0][1].items():
-                    print(f"{char}: {freq:.2f}%")
-            else:
-                print("\nPossible decryptions:")
-                for key, text, score in results[:5]:
-                    print(f"\nScore: {score:.2f}")
-                    print(f"Key: {key}")
-                    print(f"Text: {text}")
-            return
+        # else:  # crack
+        #     results = crypto.crack_cipher(args.cipher, text)
+        #     if args.cipher == 'mono':
+        #         print("\nFrequency Analysis Results:")
+        #         for char, freq in results[0][1].items():
+        #             print(f"{char}: {freq:.2f}%")
+        #     else:
+        #         print("\nPossible decryptions:")
+        #         for key, text, score in results[:5]:
+        #             print(f"\nScore: {score:.2f}")
+        #             print(f"Key: {key}")
+        #             print(f"Text: {text}")
+        #     return
 
         # Save or print result
         if args.output:

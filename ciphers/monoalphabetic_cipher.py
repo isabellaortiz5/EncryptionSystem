@@ -103,9 +103,9 @@ class MonoalphabeticCipher:
                 plaintext += char
         return plaintext
 
-    def analyze_frequency(self, text: str) -> Dict[str, float]:
-        """Perform frequency analysis on the text."""
-        return dict(self.analysis.analyze_frequency(text))
+    # def analyze_frequency(self, text: str) -> Dict[str, float]:
+    #     """Perform frequency analysis on the text."""
+    #     return dict(self.analysis.analyze_frequency(text))
 
     def save_key(self, filename: str):
         """Save the current key to a file."""

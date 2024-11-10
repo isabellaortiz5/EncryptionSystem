@@ -1,7 +1,7 @@
 {
     "cipher_type": "affine",
     "key_data": {
-        "a": 19,
-        "b": 16
+        "a": 17,
+        "b": 22
     }
 }

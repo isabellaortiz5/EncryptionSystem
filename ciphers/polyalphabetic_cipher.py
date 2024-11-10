@@ -96,9 +96,9 @@ class PolyalphabeticCipher:
                 
         return plaintext
 
-    def analyze_key_length(self, ciphertext: str, max_length: int = 20) -> List[Tuple[int, float]]:
-        """Analyze possible key lengths using Index of Coincidence."""
-        return self.analysis.get_likely_key_lengths(ciphertext, max_length)
+    # def analyze_key_length(self, ciphertext: str, max_length: int = 20) -> List[Tuple[int, float]]:
+    #     """Analyze possible key lengths using Index of Coincidence."""
+    #     return self.analysis.get_likely_key_lengths(ciphertext, max_length)
 
     def save_key(self, key: str, filename: str):
         """Save the key to a file."""
